@@ -4,8 +4,9 @@ Wikipedia
 
 '''
 
-import requests, json
+import json
 from urllib.parse import quote as encode
+import requests
 
 class Wiki:
 
@@ -15,13 +16,19 @@ class Wiki:
 
 	'''
 
-	def __init__(self, options={}):
+	def __init__(self, options=False):
 
 		'''
 
 		Initialisation
 
 		'''
+
+		if not options:
+			options = {
+				'lang': 'en',
+				'redirect': 1
+			}
 
 		self.options = options
 
@@ -52,14 +59,13 @@ class Wiki:
 		if not lang:
 			lang = self.options['lang']
 
-		params = {}
 		if isinstance(addr, int):
 
 			# Extract Title From ID
 
 			url = f"http://{lang}.wikipedia.org/w/api.php?action=query&pageids={addr}&format=json"
 
-			x = requests.get(url)
+			x = requests.get(url, timeout=5)
 			data = json.loads(x.text)
 			if not data['pages']:
 				return False
@@ -68,19 +74,19 @@ class Wiki:
 				return False
 
 			addr = data['pages'][str(addr)]['title']
-		
+
 		# Get Page
 
 		url = f"https://{lang}.wikipedia.org/w/rest.php/v1/page/{encode(addr)}/bare"
-		x = requests.get(url)
+		x = requests.get(url, timeout=5)
 		data = json.loads(x.text)
-		
+
 		if 'httpCode' in data and data['httpCode'] == 404:
 			return False
 
-		pageOptions = self.options
-		pageOptions['lang'] = lang
-		return Page(data, pageOptions)
+		page_options = self.options
+		page_options['lang'] = lang
+		return Page(data, page_options)
 
 
 class Page:
@@ -105,7 +111,7 @@ class Page:
 		self.title = data['title']
 		self.key = data['key']
 		self.html_url = data['html_url']
-		
+
 		self.get_content()
 
 		self.summary = self.get_summary()
@@ -119,9 +125,9 @@ class Page:
 		'''
 
 		url = f"https://{self.options['lang']}.wikipedia.org/w/api.php?action=query&format=json&titles={self.key}&prop=extracts|links&explaintext"
-		
+
 		# Request API
-		x = requests.get(url)
+		x = requests.get(url, timeout=5)
 		data = json.loads(x.text)
 
 		# Page Not Found
@@ -133,11 +139,13 @@ class Page:
 		self.content = data['query']['pages'][str(self.id)]['extract']
 
 		# Get Links
-		
+
 		links = []
 		for link in data['query']['pages'][str(self.id)]['links']:
 			links.append(link['title'])
 		self.links = links
+
+		return True
 
 	def get_summary(self):
 
@@ -150,7 +158,7 @@ class Page:
 		url = f"https://{self.options['lang']}.wikipedia.org/w/api.php?format=json&action=query&redirects=1&titles={self.key}&prop=extracts&explaintext&exintro"
 
 		# Request API
-		x = requests.get(url)
+		x = requests.get(url, timeout=5)
 		data = json.loads(x.text)
 
 		# Page Not Found
@@ -160,7 +168,3 @@ class Page:
 		# Get Plain Text Summary
 
 		return data['query']['pages'][str(self.id)]['extract']
-
-
-
-

@@ -5,4 +5,6 @@ Surfy Tests
 '''
 
 import tests
-tests.test()
+
+if __name__ == '__main__':
+	tests.test()
