@@ -25,14 +25,17 @@ def test():
 	print(Wiki)
 	wiki = Wiki()
 	page = wiki.page('Eiffel Tower')
+	# page = wiki.page('1900 Summer Olympics')
 	print(page)
 	if not page:
 		print('Page Not Found')
 		return False
 
-	print(f'ID: {page.id}')
-	print(f'Title: {page.title}')
-	print(f'Content: {page.content[:250]}...')
+	print(f'\nID: {page.id}')
+	print(f'\nTitle: {page.title}')
+	print(f'\nContent: {page.content[:250]}...')
+	print(f'\nLinks: {page.links[:10]}...')
+	print(f'\nSummary: {page.summary}')
 
 	# Runs Tests
 
