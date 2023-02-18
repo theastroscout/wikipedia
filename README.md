@@ -16,6 +16,14 @@ wiki = Wiki()
 
 ```python
 
+'''
+
+wiki.page(
+	addr=Title|PageID,
+	lang=Language # Default 'en'
+)
+
+'''
 page = wiki.page('Eiffel Tower')
 
 if not page:
@@ -26,6 +34,15 @@ else:
 	page.content # Page Plain Text Content
 	page.links # All links from the page
 	page.summary # Plain Text Summary
+
+```
+<br/>
+
+### Set global language
+
+```python
+
+wiki.set_lang('fr')
 
 ```
 

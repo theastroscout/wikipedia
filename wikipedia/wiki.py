@@ -9,7 +9,20 @@ from urllib.parse import quote as encode
 
 class Wiki:
 
+	'''
+
+	Create Wikipedia Global
+
+	'''
+
 	def __init__(self, options={}):
+
+		'''
+
+		Initialisation
+
+		'''
+
 		self.options = options
 
 		if 'lang' not in options:
@@ -18,20 +31,33 @@ class Wiki:
 		if 'redirect' not in options:
 			self.options['redirect'] = 1
 
-	def page(self, addr):
+	def set_lang(self, lang):
 
 		'''
-	
-		Get Page
+
+		Set Global Lang
 
 		'''
+
+		self.options['lang'] = lang
+
+	def page(self, addr, lang=False):
+
+		'''
+
+		Get Page Instance
+
+		'''
+
+		if not lang:
+			lang = self.options['lang']
 
 		params = {}
 		if isinstance(addr, int):
 
 			# Extract Title From ID
 
-			url = f"http://{self.options['lang']}.wikipedia.org/w/api.php?action=query&pageids={addr}&format=json"
+			url = f"http://{lang}.wikipedia.org/w/api.php?action=query&pageids={addr}&format=json"
 
 			x = requests.get(url)
 			data = json.loads(x.text)
@@ -45,14 +71,16 @@ class Wiki:
 		
 		# Get Page
 
-		url = f"https://{self.options['lang']}.wikipedia.org/w/rest.php/v1/page/{encode(addr)}/bare"
+		url = f"https://{lang}.wikipedia.org/w/rest.php/v1/page/{encode(addr)}/bare"
 		x = requests.get(url)
 		data = json.loads(x.text)
 		
 		if 'httpCode' in data and data['httpCode'] == 404:
 			return False
 
-		return Page(data, self.options)
+		pageOptions = self.options
+		pageOptions['lang'] = lang
+		return Page(data, pageOptions)
 
 
 class Page:
