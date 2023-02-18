@@ -339,7 +339,7 @@ single-line-if-stmt=no
 
 # List of modules that can be imported at any level, not just the top level
 # one.
-allow-any-import-level=
+allow-any-import-level=yes
 
 # Allow explicit reexports by alias from a package __init__.
 allow-reexport-from-package=no
