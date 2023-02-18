@@ -1,0 +1,9 @@
+/prod
+__pycache__
+/conf
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+xfs-config.json
+/dist
+*.egg-info
