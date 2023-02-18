@@ -1,6 +1,7 @@
 ![Wikipedia](https://github.com/theastroscout/wikipedia/blob/main/imgs/cover.1.png?raw=true "Wikipedia")
 
 # Wikipedia Python Library
+<br/>
 
 ## Usage
 ```python
@@ -9,6 +10,7 @@ from wikipedia import Wiki
 wiki = Wiki()
 
 ```
+<br/>
 
 ### Get Page by Title or Page ID
 
