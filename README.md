@@ -19,7 +19,7 @@ wiki = Wiki()
 '''
 
 wiki.page(
-	addr=Title|PageID,
+	addr=Address # str Title or int PageID,
 	lang=Language # Default 'en'
 )
 
