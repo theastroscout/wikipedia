@@ -20,7 +20,7 @@ page = wiki.page('Eiffel Tower')
 
 if not page:
 	print('Page Not Found')
-else :
+else:
 	page.id # Page ID
 	page.title # Page Title
 	page.content # Page Plain Text Content
